@@ -1,0 +1,71 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform variable files (may contain sensitive data)
+*.tfvars
+*.tfvars.json
+terraform.tfvars
+terraform.tfvars.json
+
+# Exception: example tfvars can be committed
+!example.tfvars
+!*.example.tfvars
+
+# Terraform plan files
+*.tfplan
+*.tfplan.*
+
+# Terraform CLI configuration files
+.terraformrc
+terraform.rc
+
+# DevBox/Nix files
+.devbox/
+result
+result-*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Credentials and secrets
+*.pem
+*.key
+*.crt
+*.csr
+**/credentials
+**/secrets
+.password-store/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+*.tmp
+
+# Logs
+*.log
+logs/
+
+# OS files
+Thumbs.db
+.Spotlight-V100
+.Trashes

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
+  "packages": [
+    "python@3.12",
+    "locale@latest",
+    "gnupg@latest",
+    "pinentry-gtk2@latest",
+    "git@latest",
+    "go-task@latest",
+    "neovim@latest",
+    "gopass@latest",
+    "btop@latest",
+    "pass@latest",
+    "uv@latest",
+    "terraform@latest",
+  ],
+  "env": {
+    "LANG":               "nb_NO.UTF-8",
+    "LC_ALL":             "nb_NO.UTF-8",
+    "EDITOR":             "nvim",
+    "VISUAL":             "nvim",
+    "PASSWORD_STORE_DIR": "~/.password-store",
+    "GPG_DEFAULT_USER":   "bvborge@gmail.com",
+  },
+  "shell": {
+    "init_hook": [
+      "export PASSWORD_STORE_DIR=~/.password-store",
+      "export ZSCALER_CLIENT_ID=$(gopass show ansible/zscaler/zia/client_id)",
+      "export ZSCALER_CLIENT_SECRET=$(gopass show ansible/zscaler/zia/client_secret)",
+      "export ZSCALER_VANITY_DOMAIN=$(gopass show ansible/zscaler/zia/vanity_domain)",
+      "export ZPA_CUSTOMER_ID=$(gopass show ansible/zscaler/zpa/customer_id)"
+    ],
+    "scripts": {
+      "wgetrc": ["echo 'inet4_only = on' >> ~/.wgetrc"],
+      "curlrc": ["echo ipv4 >> ~/.curlrc"],
+    },
+  },
+}
