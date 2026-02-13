@@ -5,20 +5,16 @@ This repository contains Terraform configurations for automating Zscaler Interne
 ## Requirements
 
 1. You need to configure Zscaler OneAPI with appropriate permissions.
-2. You need to have Terraform installed on your system.
+2. You need to have DevBox and Nix Packet Manager installed on your system.
 3. You need to decide on a secrets management method for storing Zscaler OneAPI credentials.
 
 ## Configuration
 
 ### Zscaler OneAPI credentials
 
-In order to use the Ansible playbooks and roles in this repository, you will need to generate Zscaler OneAPI credentials. You can obtain these by logging into the [Zscaler Experience Center](https://console.zscaler.com) and navigating to the OneAPI section (***Administration -> API Configuration -> OneAPI***).
+In order to use this repository, you will need to generate Zscaler OneAPI credentials. You can obtain these by logging into the [Zscaler Experience Center](https://console.zscaler.com) and navigating to the OneAPI section (***Administration -> API Configuration -> OneAPI***).
 
-At this moment Zscaler OneAPI is only supported on the ZIA collection. When using the ZPA collection you will need to use the Legacy API.
-
-For the Legacy API you will also need your **customer ID** and the name of the **ZPA cloud**.
-
-#### DevBox Installation and basic usage
+### DevBox Installation and basic usage
 
 ```shell
 # Install DevBox
@@ -65,10 +61,10 @@ provider "zpa" {}
 Export the required credentials using Gopass to retrieve stored secrets. This is done automatically when the virtual environment is activated.
 
 ```shell
-export ZSCALER_CLIENT_ID=$(gopass show ansible/zscaler/zia/client_id)
-export ZSCALER_CLIENT_SECRET=$(gopass show ansible/zscaler/zia/client_secret)
-export ZSCALER_VANITY_DOMAIN=$(gopass show ansible/zscaler/zia/vanity_domain)
-export ZPA_CUSTOMER_ID=$(gopass show ansible/zscaler/zpa/customer_id)
+export ZSCALER_CLIENT_ID=$(gopass show zscaler_oneapi/client_id)
+export ZSCALER_CLIENT_SECRET=$(gopass show zscaler_oneapi/client_secret)
+export ZSCALER_VANITY_DOMAIN=$(gopass show zscaler_oneapi/vanity_domain)
+export ZPA_CUSTOMER_ID=$(gopass show zscaler_oneapi/customer_id)
 ```
 
 **Documentation:**
@@ -76,14 +72,48 @@ export ZPA_CUSTOMER_ID=$(gopass show ansible/zscaler/zpa/customer_id)
 - [ZIA Environment Variables](https://registry.terraform.io/providers/zscaler/zia/latest/docs#default-environment-variables)
 - [ZPA Environment Variables](https://registry.terraform.io/providers/zscaler/zpa/latest/docs#default-environment-variables)
 
-## Usage
+## Getting Started
+
+### Clone repository from Github
+
+```shell
+git clone git@github.com:borgermeister/terraform_zscaler.git
+```
+
+### Activate DevBox Environment
+
+```shell
+# Activate DevBox environment (this may take some time)
+devbox shell
+```
+
+### Generate GPG key pair
+
+```shell
+# Use GPG to generate a key pair to be used for securing Password Store
+gpg --expert --full-generate-key
+```
+
+### Initialize Password Store
+
+```shell
+# Initialize Password Store using GoPass. Remember to generate a GPG key before initializing.
+gopass init 'your GPG key'
+```
+
+### Add secrets to Password Store
+
+```shell
+# Add Zscaler OneAPI information into the Password Store
+gopass insert zscaler_oneapi/client_id
+gopass insert zscaler_oneapi/client_secret
+gopass insert zscaler_oneapi/vanity_domain
+gopass insert zscaler_oneapi/customer_id
+```
 
 ### Initialize Terraform
 
 ```shell
-# Activate DevBox environment first
-devbox shell
-
 # Initialize Terraform (downloads providers)
 terraform init
 

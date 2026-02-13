@@ -53,8 +53,24 @@ resource "zia_ssl_inspection_rules" "rules" {
     }
   }
 
-  url_categories     = try(each.value.url_categories, [])
-  cloud_applications = try(each.value.cloud_applications, [])
+  dynamic "devices" {
+    for_each = try(each.value.devices, null) != null ? each.value.devices : []
+    content {
+      id = devices.value
+    }
+  }
+
+  dynamic "device_groups" {
+    for_each = try(each.value.device_groups, null) != null ? each.value.device_groups : []
+    content {
+      id = device_groups.value
+    }
+  }
+
+  device_trust_levels = try(each.value.device_trust_levels, []) # ["UNKNOWN_DEVICETRUSTLEVEL", "LOW_TRUST", "MEDIUM_TRUST", "HIGH_TRUST"]
+  url_categories      = try(each.value.url_categories, [])
+  cloud_applications  = try(each.value.cloud_applications, [])
+  user_agent_types    = try(each.value.user_agent_types, []) # ["OPERA", "FIREFOX", "MSIE", "MSEDGE", "CHROME", "SAFARI", "MSCHREDGE"]
 
   action {
     type                         = each.value.action.type

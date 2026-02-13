@@ -2,11 +2,11 @@
 resource "zia_url_filtering_rules" "rules" {
   for_each = { for rule in local.zia_url_filtering_rules_processed : rule.name => rule }
 
-  name        = each.value.name
   order       = each.value.order
+  name        = each.value.name
+  state       = try(each.value.state, "ENABLED")
   rank        = try(each.value.rank, 7)
   description = try(each.value.description, null)
-  state       = try(each.value.state, "ENABLED")
   action      = each.value.action
 
   # Time validity settings
@@ -26,11 +26,10 @@ resource "zia_url_filtering_rules" "rules" {
   # Simple list attributes
   url_categories         = try(each.value.url_categories, [])
   protocols              = try(each.value.protocols, [])
-  request_methods        = try(each.value.request_methods, [])
-  device_trust_levels    = try(each.value.device_trust_levels, [])
-  user_risk_score_levels = try(each.value.user_risk_score_levels, [])
-  user_agent_types       = try(each.value.user_agent_types, [])
+  request_methods        = try(each.value.request_methods, ["OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "CONNECT", "OTHER", "PROPFIND", "PROPPATCH", "MOVE", "MKCOL", "LOCK", "COPY", "UNLOCK", "PATCH"])
+  user_agent_types       = try(each.value.user_agent_types, []) # ["OPERA", "FIREFOX", "MSIE", "MSEDGE", "CHROME", "SAFARI", "MSCHREDGE"]
   source_countries       = try(each.value.source_countries, [])
+  device_trust_levels    = try(each.value.device_trust_levels, []) # ["UNKNOWN_DEVICETRUSTLEVEL", "LOW_TRUST", "MEDIUM_TRUST", "HIGH_TRUST"]
 
   # Dynamic blocks for ID-based relationships
   dynamic "labels" {
@@ -100,14 +99,6 @@ resource "zia_url_filtering_rules" "rules" {
     for_each = try(each.value.device_groups, null) != null ? each.value.device_groups : []
     content {
       id = device_groups.value
-    }
-  }
-
-  dynamic "workload_groups" {
-    for_each = try(each.value.workload_groups, null) != null ? each.value.workload_groups : []
-    content {
-      id   = workload_groups.value.id
-      name = try(workload_groups.value.name, null)
     }
   }
 

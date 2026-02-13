@@ -11,8 +11,11 @@ locals {
       departments        = []
       locations          = []
       location_groups    = []
+      devices            = []
+      device_groups      = []
       url_categories     = ["FINANCE"]
       cloud_applications = []
+      user_agent_types   = []
       action = {
         type = "DO_NOT_DECRYPT"
         do_not_decrypt_sub_actions = {
@@ -31,8 +34,11 @@ locals {
       departments        = []
       locations          = []
       location_groups    = []
+      devices            = []
+      device_groups      = []
       url_categories     = []
       cloud_applications = ["MSLOGINSERVICES", "SHAREPOINTONLINE"]
+      user_agent_types   = []
       action = {
         type = "DECRYPT"
       }
@@ -41,7 +47,7 @@ locals {
     {
       name               = "Terraform / Test"
       order              = 3
-      description        = "Inspect Microsoft Apps - to enable tenant restrictions"
+      description        = "Terraform test rule"
       enabled            = false
       labels             = [data.zia_rule_labels.automation.id]
       groups             = [data.zia_group_management.borgermeister_contractors.id]
@@ -50,6 +56,7 @@ locals {
       location_groups    = []
       url_categories     = []
       cloud_applications = ["MSLOGINSERVICES", "SHAREPOINTONLINE"]
+      user_agent_types   = ["OPERA", "SAFARI"]
       action = {
         type = "DECRYPT"
         decrypt_sub_actions = {
