@@ -4,7 +4,8 @@ Gopass is built in Go language and is based on [Pass](https://www.passwordstore.
 
 ## Install Gopass
 
-> [!NOTE] Pro tip
+> [!NOTE]
+> Pro tip
 > Instead of specifing the architechture in the file name you can replace `arm`, `arm64`, `amd64` etc with `$(dpkg --print-architecture)`
 > `dpkg` is the Debian Package Manager and will only work on Debian based systems.
 
