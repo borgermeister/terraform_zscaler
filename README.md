@@ -1,11 +1,11 @@
-# Zscaler - Automation with Terraform
+# Zscaler - Automating with Terraform
 
 This repository contains Terraform configurations for automating Zscaler Internet Access (ZIA) and Zscaler Private Access (ZPA) deployment and management.
 
 ## Requirements
 
 1. You need to configure Zscaler OneAPI with appropriate permissions.
-2. You need to have DevBox and Nix Packet Manager installed on your system.
+2. You need to have [DevBox](https://www.jetify.com/devbox) and [Nix Packet Manager](https://nixos.org/download/#download-nix) installed on your system.
 3. You need to decide on a secrets management method for storing Zscaler OneAPI credentials.
 
 ## Configuration
@@ -18,7 +18,7 @@ In order to use this repository, you will need to generate Zscaler OneAPI creden
 
 ```shell
 # Install DevBox
-curl -fsSL https://get.jetify.com/devbox | bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://get.jetify.com/devbox | bash
 
 # Install Nix package manager
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
@@ -38,7 +38,7 @@ devbox version update
 
 ## Secrets Management
 
-Pass will be installed as soon as you run the DevBox virtual environment. [Gopass](https://www.gopass.pw) is a more modern and intuitive way to manage the Password Store, and will also be installed as part of the DevBox installation.
+[Pass](https://www.passwordstore.org) and [Gopass](https://www.gopass.pw) will be installed as soon as you activate the DevBox virtual environment. Gopass is a more modern and intuitive way to manage the Password Store, and will also be installed as part of the DevBox installation.
 
 ### Authentication Methods
 
@@ -80,10 +80,10 @@ export ZPA_CUSTOMER_ID=$(gopass show zscaler_oneapi/customer_id)
 git clone git@github.com:borgermeister/terraform_zscaler.git
 ```
 
-### Activate DevBox Environment
+### Activate DevBox Virtual Environment
 
 ```shell
-# Activate DevBox environment (this may take some time)
+# Activate DevBox virtual environment (this may take some time)
 devbox shell
 ```
 
@@ -92,6 +92,52 @@ devbox shell
 ```shell
 # Use GPG to generate a key pair to be used for securing Password Store
 gpg --expert --full-generate-key
+```
+
+### GPG and GPG Agent Configuration
+
+#### GPG Agent
+
+Edit GPG agent config file: `vim ~/.gnupg/gpg-agent.conf`
+
+```text
+# Set the time a cache entry is valid to n seconds. The default is 600 seconds.
+# Each time a cache entry is accessed, the entrys reset. To set an entrys lifetime, use max-cache-ttl.
+
+default-cache-ttl 86400
+
+# Set the maximum time a cache entry is valid to n seconds.
+# After this time a cache entry will be expired even if it has been accessed recently or has been set using gpg-preset-passphrase.
+# The default is 2 hours (7200 seconds).
+
+max-cache-ttl 604800
+```
+
+Restart GPG agent to read changes from the config file: `gpgconf --kill gpg-agent`
+
+#### GPG Configuration
+
+Edit GPG config file: `vim ~/.gnupg/gpg.conf`
+
+```text
+# The default key to sign with. If this option is not used, the default key is
+# the first key found in the secret keyring
+default-key <KEYID>
+
+# Disable inclusion of the version string in ASCII armored output
+no-emit-version
+
+# This is the server that --recv-keys, --send-keys, and --search-keys will
+# communicate with to receive keys from, send keys to, and search for keys on
+# keyserver hkps://keyserver.ubuntu.com is an alternative GPG server
+keyserver hkps://keys.openpgp.org/
+
+# Use the strongest digest algorithms
+personal-digest-preferences SHA512 SHA384 SHA256
+cert-digest-algo SHA512
+
+# Display fingerprints to be sure about the key you're using
+with-fingerprint
 ```
 
 ### Initialize Password Store

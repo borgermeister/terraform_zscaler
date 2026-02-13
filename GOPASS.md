@@ -10,8 +10,8 @@ Gopass is built in Go language and is based on [Pass](https://www.passwordstore.
 
 ```bash
 # Debian and Ubuntu
-wget https://github.com/gopasspw/gopass/releases/download/v1.15.15/gopass_1.15.15_linux_$(dpkg --print-architecture).deb
-sudo dpkg -i gopass_1.15.15_linux_$(dpkg --print-architecture).deb
+wget https://github.com/gopasspw/gopass/releases/download/v1.16.1/gopass_1.16.1_linux_$(dpkg --print-architecture).deb
+sudo dpkg -i gopass_1.16.1_linux_$(dpkg --print-architecture).deb
 
 # RedHat and Rocky Linux
 sudo dnf copr enable daftaupe/gopass centos-stream-9-x86_64
