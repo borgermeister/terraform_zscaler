@@ -185,3 +185,9 @@ terraform state list
 # Remove a resource from state (without destroying it)
 terraform state rm <resource_address>
 ```
+
+## Final thoughts
+
+My initial focus has been developing a robust framework for SSL Inspection and URL Filtering policies. To ensure scalability, I’ve adopted a DRY (Don't Repeat Yourself) philosophy — leveraging `locals` to create reusable logic rather than duplicating blocks of code.
+
+Please note: This is an early-stage release. While the core logic is sound, I haven't yet validated every edge-case combination for these rules, so consider this a 'beta' version as I continue to refine the code! 🤓
